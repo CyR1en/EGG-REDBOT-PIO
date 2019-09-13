@@ -41,7 +41,7 @@ class BikeBot {
     weird unexpectedly.
 
     We can also use validation to validate certain conditions that we
-    could comeup with in the futre :).
+    could come up with in the future :).
 */
 class Validate {
     public:

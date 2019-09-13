@@ -9,7 +9,7 @@
 Validate::Validate() {}
 
 /*
-    Ternary operation that validates the rotation speed isn't dastrically 
+    Ternary operation that validates that the rotation speed isn't drastically
     slow or fast.
 
     @param rotateSpeed The rotate speed to be validated.
