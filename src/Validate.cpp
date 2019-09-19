@@ -4,9 +4,10 @@
     @author Ethan Bacurio
 */
 
-#include "BikeBot.h"
+#include <BikeBot.h>
+#include "Validate.h"
 
-Validate::Validate() {}
+Validate::Validate() = default;
 
 /*
     Ternary operation that validates that the rotation speed isn't drastically

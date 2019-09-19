@@ -1,16 +1,17 @@
 
-#include <BikeBot.h> 
+#include <BikeBot.h>
 
 BikeBot bikeBot = BikeBot(255, 180);
 
-void setup(){
-  bikeBot.forward();
-  delay(2000);         
-  bikeBot.stop();      
+void setup() {
+    bikeBot.forward();
+    delay(2000);
+    bikeBot.stop();
 }
 
-void loop(){
-  delay(200);
-  Serial.println();
+
+void loop() {
+    delay(200);
+    Serial.println();
 }
 
