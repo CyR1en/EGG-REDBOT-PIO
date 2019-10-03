@@ -1,6 +1,6 @@
 #include "BikeBot.h"
 
-int countsPerRev = 192;
+int countsPerRev2 = 192;
 
 long lCounter;
 long rCounter;
@@ -42,8 +42,8 @@ void BikeBot::drive(int _dV, int revolution) {
     else {
         encoder.clearEnc(BOTH);
         motors.drive(_dV);
-        while ((lCounter < revolution * countsPerRev) ||
-               (rCounter < revolution * countsPerRev)) {
+        while ((lCounter < revolution * countsPerRev2) ||
+               (rCounter < revolution * countsPerRev2)) {
             lCounter = encoder.getTicks(LEFT);
             rCounter = encoder.getTicks(RIGHT);
         }
