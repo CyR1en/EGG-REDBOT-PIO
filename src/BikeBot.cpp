@@ -163,7 +163,55 @@ void BikeBot::rotate(int angle) {
 }
 
 void BikeBot::pivotAngle(float angle) {
+  void pivotAngle(float angle) {
 
+    // use wheel encoders to pivot (turn) by specified angle
+
+    // set motor power for pivoting
+    int power = 100; // clockwise
+    if (angle < 0) power *= -1; // negative power for counter-clockwise
+
+    // use correction to improve angle accuracy
+    // adjust correction value based on test results
+    float correction = -5.0; // need decimal point for float value
+    if (angle > 0) angle += correction;
+    else if (angle < 0) angle -= correction;
+
+    // variable for tracking wheel encoder counts
+    long rightCount = 0;
+
+    // values based on RedBot's encoders, motors & wheels
+    float countsPerRev = 192.0; // 192 encoder ticks per wheel revolution
+    float wheelDiam = 2.56; // wheel diameter = 65 mm = 2.56 in
+    float wheelCirc = PI * wheelDiam; // wheel circumference = 3.14 x 2.56 in = 8.04 in
+    float pivotDiam = 6.125; // pivot diameter = distance between centers of wheel treads = 6.125 in
+    float pivotCirc = PI * pivotDiam; // pivot circumference = 3.14 x 6.125 in = 19.23 in
+
+    // based on angle, calculate distance (arc length) for pivot
+    float distance = abs(angle) / 360.0 * pivotCirc;
+
+    // based on distance, calculate number of wheel revolutions
+    float numRev = distance / wheelCirc;
+
+    // based on number of revolutions, calculate target encoder count
+    float targetCount = numRev * countsPerRev;
+
+    // reset encoder counters and start pivoting
+    encoder.clearEnc(BOTH);
+    delay(100);
+    motors.pivot(power);
+
+    // keeps looping while right encoder count less than target count
+    while (abs(rightCount) < abs(targetCount)) {
+      // get current wheel encoder count
+      rightCount = encoder.getTicks(RIGHT);
+      delay(10);  // short delay before next reading
+    }
+
+    // target count reached
+    motors.brake();
+    delay(250);
+  }
 }
 
 void BikeBot::setBaseSpeed(int _baseSpeed) {
