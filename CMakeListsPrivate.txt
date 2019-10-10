@@ -8,7 +8,7 @@
 
 set(CMAKE_CONFIGURATION_TYPES "uno" CACHE STRING "" FORCE)
 
-set(PLATFORMIO_CMD "/Library/Frameworks/Python.framework/Versions/3.7/bin/platformio")
+set(PLATFORMIO_CMD "/usr/local/bin/pio")
 
 SET(CMAKE_C_COMPILER "$ENV{HOME}/.platformio/packages/toolchain-atmelavr/bin/avr-gcc")
 SET(CMAKE_CXX_COMPILER "$ENV{HOME}/.platformio/packages/toolchain-atmelavr/bin/avr-g++")
@@ -32,7 +32,6 @@ if (CMAKE_BUILD_TYPE MATCHES "uno")
     include_directories("$ENV{HOME}/.platformio/packages/framework-arduinoavr/cores/arduino")
     include_directories("$ENV{HOME}/.platformio/packages/framework-arduinoavr/variants/standard")
     include_directories("$ENV{HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src")
-    include_directories("$ENV{HOME}/.platformio/lib/SparkFun RedBot Library_ID661/src")
     include_directories("$ENV{HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src")
     include_directories("$ENV{HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src")
     include_directories("$ENV{HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src")

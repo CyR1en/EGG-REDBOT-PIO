@@ -14,7 +14,6 @@
  ***********************************************************************/
 #include <RedBot.h>
 #include <BikeBot.h>
-
 BikeBot bikeBot;
 
 int buttonPin = 12;
@@ -26,7 +25,7 @@ void setup(){
 
 void loop(void){
     if (digitalRead(buttonPin) == LOW){
-        bikeBot.setRotateSpeed(100);
+      bikeBot.setRotateSpeed(200);
         bikeBot.rotate(90);
     }
 }
