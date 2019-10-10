@@ -26,6 +26,6 @@ void setup(){
 
 void loop(void){
     if (digitalRead(buttonPin) == LOW){
-        bikeBot.driveStraight(12, 150);
+        bikeBot.rotate(90);
     }
 }
