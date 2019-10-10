@@ -145,15 +145,25 @@ void BikeBot::stop() {
 }
 
 void BikeBot::rotate(int angle) {
-    long turningTime = (long) 1000 * angle / dR;
 
-    int dV = (angle > 0) ? -100 : 100;
+    Serial.print("Angle: \t"); Serial.println(angle);
+    Serial.print("DV: \t"); Serial.println(dV);
+    long turningTime = angle * ((2.514 * PI)/abs(dV));
+    Serial.print("Turning Time:\t");
+    Serial.println(turningTime);
 
-    motors.rightMotor(dV);
-    motors.leftMotor(dV);
+    int _dV = (angle > 0) ? -dV : dV;
+
+    motors.rightMotor(_dV);
+    motors.leftMotor(_dV);
 
     delay(turningTime);
+
     motors.brake();
+}
+
+void BikeBot::pivotAngle(float angle) {
+
 }
 
 void BikeBot::setBaseSpeed(int _baseSpeed) {

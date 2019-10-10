@@ -56,6 +56,8 @@ public:
     void leftDrive(int speed);
 
     void driveStraight(float distance, int motorPower);
+
+    void pivotAngle(float angle);
 };
 
 
