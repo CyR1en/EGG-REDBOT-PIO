@@ -50,6 +50,12 @@ public:
     void setRotateSpeed(int _rotateSpeed);
 
     void drive(int dV, int revolution);
+
+    void rightDrive(int pwr);
+
+    void leftDrive(int speed);
+
+    void driveStraight(float distance, int motorPower);
 };
 
 
