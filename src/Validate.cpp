@@ -10,17 +10,6 @@
 Validate::Validate() = default;
 
 /*
-    Ternary operation that validates that the rotation speed isn't drastically
-    slow or fast.
-
-    @param rotateSpeed The rotate speed to be validated.
-    @return validated rotate speed.
-*/
-int Validate::validatedRotateSpeed(int rotateSpeed) {
-    return (rotateSpeed < MIN_ROTATION_SPEED) ? MIN_ROTATION_SPEED : rotateSpeed;
-}
-
-/*
     Ternary operation that validates that the speed is within the
     bounds of the motors accepted speed range.
 

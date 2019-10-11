@@ -14,8 +14,7 @@ long rCounter;
  * Constructs bot with default speeds.
  */
 BikeBot::BikeBot() {
-    dV = DEFAULT_ROTATION_SPEED;
-    dR = DEFAULT_ROTATION_SPEED;
+    power = DEFAULT_POWER;
 }
 
 /**
@@ -27,7 +26,7 @@ BikeBot::BikeBot() {
  * @param _rotate_speed rotation speed to initialize with.
  */
 BikeBot::BikeBot(int _base_speed, int _rotate_speed) {
-    dV = Validate::validatedSpeed(_base_speed);
+    power = Validate::validatedSpeed(_base_speed);
     dR = Validate::validatedRotateSpeed(_rotate_speed);
 }
 
@@ -39,12 +38,12 @@ void BikeBot::leftDrive(int speed) {
     motors.leftDrive(speed);
 }
 
-void BikeBot::forward(int revolution) {
-    drive(dV, revolution);
+void BikeBot::forward(float distance) {
+    driveStraight(distance);
 }
 
-void BikeBot::reverse(int revolution) {
-    drive(-dV, revolution);
+void BikeBot::reverse(float distance) {
+    driveStraight(distance);
 }
 
 void BikeBot::driveStraight(float distance, int motorPower) {
@@ -68,23 +67,6 @@ void BikeBot::driveStraight(float distance, int motorPower) {
     numRev = distance / wheelCirc;  // calculate the target # of rotations
     targetCount = numRev * countsPerRev;    // calculate the target count
 
-    // debug
-    Serial.print("driveStraight() ");
-    Serial.print(distance);
-    Serial.print(" inches at ");
-    Serial.print(motorPower);
-    Serial.println(" power.");
-
-    Serial.print("Target: ");
-    Serial.print(numRev, 3);
-    Serial.println(" revolutions.");
-    Serial.println();
-
-    // print out header
-    Serial.print("Left\t");   // "Left" and tab
-    Serial.print("Right\t");  // "Right" and tab
-    Serial.println("Target count");
-    Serial.println("============================");
 
     encoder.clearEnc(BOTH);    // clear the encoder count
     delay(100);  // short delay before starting the motors.
@@ -133,37 +115,22 @@ void BikeBot::driveStraight(float distance, int motorPower) {
 }
 
 void BikeBot::left() {
-    rotate(-90);
+    pivot(-90);
 }
 
 void BikeBot::right() {
-    rotate(90);
+    pivot(90);
 }
 
 void BikeBot::stop() {
     motors.stop();
 }
 
-void BikeBot::rotate(int angle) {
-
-    Serial.print("Angle: \t"); Serial.println(angle);
-    Serial.print("DV: \t"); Serial.println(dV);
-    long turningTime = angle * ((2.514 * PI)/abs(dV));
-    Serial.print("Turning Time:\t");
-    Serial.println(turningTime);
-
-    int _dV = (angle > 0) ? -dV : dV;
-
-    motors.rightMotor(_dV);
-    motors.leftMotor(_dV);
-
-    delay(turningTime);
-
-    motors.brake();
+void BikeBot::pivot(int angle) {
+   //TODO: Implement pivot function;
 }
 
-void BikeBot::pivotAngle(float angle) {
-  void pivotAngle(float angle) {
+void BikeBot::pivotPrecise(float angle) {
 
     // use wheel encoders to pivot (turn) by specified angle
 
@@ -180,10 +147,6 @@ void BikeBot::pivotAngle(float angle) {
     // variable for tracking wheel encoder counts
     long rightCount = 0;
 
-    // values based on RedBot's encoders, motors & wheels
-    float countsPerRev = 192.0; // 192 encoder ticks per wheel revolution
-    float wheelDiam = 2.56; // wheel diameter = 65 mm = 2.56 in
-    float wheelCirc = PI * wheelDiam; // wheel circumference = 3.14 x 2.56 in = 8.04 in
     float pivotDiam = 6.125; // pivot diameter = distance between centers of wheel treads = 6.125 in
     float pivotCirc = PI * pivotDiam; // pivot circumference = 3.14 x 6.125 in = 19.23 in
 
@@ -210,12 +173,10 @@ void BikeBot::pivotAngle(float angle) {
 
     // target count reached
     motors.brake();
-    delay(250);
-  }
 }
 
 void BikeBot::setBaseSpeed(int _baseSpeed) {
-    dV = _baseSpeed;
+    power = _baseSpeed;
 }
 
 void BikeBot::setRotateSpeed(int _rotate_speed) {
