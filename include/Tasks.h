@@ -113,7 +113,7 @@ public:
      * @tparam T Derived class of Tasks.
      * @return Return address of the constructed task.
      */
-    template<typename T>
+    template<class T>
     Tasks *construct() {
         T temp(bikeBot); //locale var; will be allocated a space in the stack.
         T *t = &temp;    //Move to heap. don't delete because it's used in the loop() func.
