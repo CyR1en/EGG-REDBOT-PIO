@@ -73,11 +73,6 @@ void BikeBot::driveStraight(float distance, int motorPower) {
         // the encoder values and wait -- this is a holding loop.
         lCount = encoder.getTicks(LEFT);
         rCount = encoder.getTicks(RIGHT);
-        Serial.print(lCount);
-        Serial.print("\t");
-        Serial.print(rCount);
-        Serial.print("\t");
-        Serial.println(targetCount);
 
         motors.leftDrive(leftPower);
         motors.rightDrive(rightPower);
