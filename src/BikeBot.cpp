@@ -3,10 +3,7 @@
 int countsPerRev = 192;   // 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
 float wheelDiam = 2.56;  // diam = 65mm / 25.4 mm/in
-float wheelCirc = PI*wheelDiam;
-
-long lCounter;
-long rCounter;
+float wheelCirc = PI * wheelDiam;
 
 /*
  * Zero-Argument Constructor.
@@ -23,11 +20,9 @@ BikeBot::BikeBot() {
  * Constructs bot with provided parameters.
  *
  * @param _base_speed speed to initialize with.
- * @param _rotate_speed rotation speed to initialize with.
  */
 BikeBot::BikeBot(int _base_speed, int _rotate_speed) {
-    power = Validate::validatedSpeed(_base_speed);
-    dR = Validate::validatedRotateSpeed(_rotate_speed);
+    power = Validate::validatedPower(_base_speed);
 }
 
 void BikeBot::rightDrive(int speed) {
@@ -73,8 +68,7 @@ void BikeBot::driveStraight(float distance, int motorPower) {
 
     motors.drive(motorPower);  // start motors
 
-    while (rCount < targetCount)
-    {
+    while (rCount < targetCount) {
         // while the right encoder is less than the target count -- debug print
         // the encoder values and wait -- this is a holding loop.
         lCount = encoder.getTicks(LEFT);
@@ -97,14 +91,12 @@ void BikeBot::driveStraight(float distance, int motorPower) {
         prevrCount = rCount;
 
         // if left is faster than the right, slow down the left / speed up right
-        if (lDiff > rDiff)
-        {
+        if (lDiff > rDiff) {
             leftPower = leftPower - offset;
             rightPower = rightPower + offset;
         }
             // if right is faster than the left, speed up the left / slow down right
-        else if (lDiff < rDiff)
-        {
+        else if (lDiff < rDiff) {
             leftPower = leftPower + offset;
             rightPower = rightPower - offset;
         }
@@ -127,7 +119,7 @@ void BikeBot::stop() {
 }
 
 void BikeBot::pivot(int angle) {
-   //TODO: Implement pivot function;
+    //TODO: Implement pivot function;
 }
 
 void BikeBot::pivotPrecise(float angle) {
@@ -166,9 +158,9 @@ void BikeBot::pivotPrecise(float angle) {
 
     // keeps looping while right encoder count less than target count
     while (abs(rightCount) < abs(targetCount)) {
-      // get current wheel encoder count
-      rightCount = encoder.getTicks(RIGHT);
-      delay(10);  // short delay before next reading
+        // get current wheel encoder count
+        rightCount = encoder.getTicks(RIGHT);
+        delay(10);  // short delay before next reading
     }
 
     // target count reached
@@ -179,9 +171,6 @@ void BikeBot::setBaseSpeed(int _baseSpeed) {
     power = _baseSpeed;
 }
 
-void BikeBot::setRotateSpeed(int _rotate_speed) {
-    dR = _rotate_speed;
-}
 
 
 

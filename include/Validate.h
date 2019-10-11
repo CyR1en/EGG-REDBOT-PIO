@@ -19,9 +19,7 @@ class Validate {
 public:
     Validate();
 
-    static int validatedSpeed(int speed);
-
-    static int validatedRotateSpeed(int rotateSpeed);
+    static int validatedPower(int power);
 };
 
 #endif

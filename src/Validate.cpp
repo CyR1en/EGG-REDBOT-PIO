@@ -16,6 +16,6 @@ Validate::Validate() = default;
     @param speed The speed to be validated.
     @return validated speed.
 */
-int Validate::validatedSpeed(int speed) {
-    return (speed < MIN_SPEED) ? MIN_SPEED : (speed > MAX_SPEED) ? MAX_SPEED : speed;
+int Validate::validatedPower(int power) {
+    return (power < MIN_POWER) ? MIN_POWER : (power > MAX_POWER) ? MAX_POWER : power;
 }

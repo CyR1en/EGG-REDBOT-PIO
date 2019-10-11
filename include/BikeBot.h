@@ -5,9 +5,9 @@
 #include<Validate.h>
 
 // Use these constants to set bounds for validations.
-const int MAX_SPEED = 255;
-const int MIN_SPEED = 0;
-const int DEFAULT_POWER = (MIN_SPEED + MAX_SPEED) / 2;
+const int MAX_POWER = 255;
+const int MIN_POWER = 0;
+const int DEFAULT_POWER = (MIN_POWER + MAX_POWER) / 2;
 
 
 // RotaryEncoder Constants
@@ -39,8 +39,6 @@ public:
     void stop();
 
     void setBaseSpeed(int _baseSpeed);
-
-    void setRotateSpeed(int _rotateSpeed);
 
     void rightDrive(int pwr);
 
