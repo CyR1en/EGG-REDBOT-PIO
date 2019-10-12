@@ -1,19 +1,19 @@
 #include "Tasks.h"
 
-Tasks::Tasks(BikeBot _bikeBot) {
+Tasks::Tasks(BikeBot *_bikeBot) {
     bikeBot = _bikeBot;
 }
 
 //Implement constructors for all class derived from tasks class.
-SRS::SRS(BikeBot _bikeBot) : Tasks(_bikeBot) {}
-LF::LF(BikeBot _bikeBot) : Tasks(_bikeBot) {}
-SAW::SAW(BikeBot _bikeBot) : Tasks(_bikeBot) {}
+SRS::SRS(BikeBot *_bikeBot) : Tasks(_bikeBot) {}
+LF::LF(BikeBot *_bikeBot) : Tasks(_bikeBot) {}
+SAW::SAW(BikeBot *_bikeBot) : Tasks(_bikeBot) {}
 
 //executeTask() implementation for class SRS(Straight Right Straight).
 void SRS::executeTask() {
-    bikeBot.driveStraight(15); //drive 18 in
-    bikeBot.pivotPrecise(90);    //pivot 90 deg
-    bikeBot.driveStraight(10); //drive 13 in
+    bikeBot->driveStraight(15); //drive 18 in
+    bikeBot->pivotPrecise(90);    //pivot 90 deg
+    bikeBot->driveStraight(10); //drive 13 in
 }
 
 //executeTask() implementation for class LF(Line Follow).
@@ -41,17 +41,17 @@ Task::Task(BikeBot _bikeBot) {
 Tasks * Task::construct(Choice c) {
     switch(c) {
         case srs: {
-            SRS c_srs(bikeBot);
+            SRS c_srs(&bikeBot);
             SRS *srs = &c_srs;
             return srs;
         }
         case lf: {
-            LF c_lf(bikeBot);
+            LF c_lf(&bikeBot);
             LF *lf = &c_lf;
             return lf;
         }
         case saw: {
-            SAW c_saw(bikeBot);
+            SAW c_saw(&bikeBot);
             SAW *saw = &c_saw;
             return saw;
         }

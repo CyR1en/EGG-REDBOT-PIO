@@ -11,9 +11,9 @@
  */
 class Tasks {
 public:
-    BikeBot bikeBot;
+    BikeBot *bikeBot;
 
-    explicit Tasks(BikeBot _bikeBot);
+    explicit Tasks(BikeBot *_bikeBot);
 
     virtual void executeTask() = 0;
 };
@@ -29,7 +29,7 @@ public:
  */
 class SRS : public Tasks {
 public:
-    explicit SRS(BikeBot _bikeBot);
+    explicit SRS(BikeBot *_bikeBot);
 
     void executeTask() final;
 };
@@ -46,7 +46,7 @@ public:
  */
 class LF : public Tasks {
 public:
-    explicit LF(BikeBot _bikeBot);
+    explicit LF(BikeBot *_bikeBot);
 
     void executeTask() final;
 };
@@ -62,7 +62,7 @@ public:
  */
 class SAW : public Tasks {
 public:
-    explicit SAW(BikeBot _bikeBot);
+    explicit SAW(BikeBot *_bikeBot);
 
     void executeTask() final;
 };
@@ -114,8 +114,8 @@ public:
      * @return Return address of the constructed task.
      */
     template<class T>
-    Tasks *construct() {
-        T temp(bikeBot); //locale var; will be allocated a space in the stack.
+    static Tasks *construct(BikeBot **bikeBot) {
+        T temp(*bikeBot); //locale var; will be allocated a space in the stack.
         T *t = &temp;    //Move to heap. don't delete because it's used in the loop() func.
         return t;        //Return address.
     }

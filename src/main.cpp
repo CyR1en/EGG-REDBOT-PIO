@@ -7,16 +7,17 @@ Tasks *tasks;
 int buttonPin = 12;
 
 void setup(){
-    BikeBot b;
-    bikeBot = &b;
+    BikeBot bot;
+    bikeBot = &bot;
 
-    tasks = Task(*bikeBot).construct<SRS>();
+    tasks = Task::construct<SRS>(&bikeBot);
+
     pinMode(buttonPin, INPUT_PULLUP);
     Serial.begin(9600);
 }
 
 void loop(void){
     if (digitalRead(buttonPin) == LOW){
-        tasks->executeTask();
+        bikeBot->pivotPrecise(90);
     }
 }
