@@ -151,13 +151,13 @@ void BikeBot::pivotPrecise(float angle) {
 
     // use wheel encoders to pivot (turn) by specified angle
 
-    // set motor power for pivoting
-    int power = 100; // clockwise
-    if (angle < 0) power *= -1; // negative power for counter-clockwise
+    // set motor _power for pivoting
+    int _power = power; // clockwise
+    if (angle < 0) _power *= -1; // negative _power for counter-clockwise
 
     // use correction to improve angle accuracy
     // adjust correction value based on test results
-    float correction = -17.0; // need decimal point for float value
+    float correction = -10.0; // need decimal point for float value
     if (angle > 0) angle += correction;
     else if (angle < 0) angle -= correction;
 
@@ -179,7 +179,7 @@ void BikeBot::pivotPrecise(float angle) {
     // reset encoder counters and start pivoting
     encoder.clearEnc(BOTH);
     delay(100);
-    motors.pivot(power);
+    motors.pivot(_power);
 
     // keeps looping while right encoder count less than target count
     while (abs(rightCount) < abs(targetCount)) {

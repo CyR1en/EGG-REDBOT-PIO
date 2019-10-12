@@ -11,11 +11,7 @@
  */
 class Tasks {
 public:
-    BikeBot *bikeBot;
-
-    explicit Tasks(BikeBot *_bikeBot);
-
-    virtual void executeTask() = 0;
+    virtual void executeTask(BikeBot *bikeBot) = 0;
 };
 
 /**
@@ -29,9 +25,7 @@ public:
  */
 class SRS : public Tasks {
 public:
-    explicit SRS(BikeBot *_bikeBot);
-
-    void executeTask() final;
+    void executeTask(BikeBot *bikeBot) override;
 };
 
 /**
@@ -46,9 +40,7 @@ public:
  */
 class LF : public Tasks {
 public:
-    explicit LF(BikeBot *_bikeBot);
-
-    void executeTask() final;
+    void executeTask(BikeBot *bikeBot) override;
 };
 
 /**
@@ -62,11 +54,18 @@ public:
  */
 class SAW : public Tasks {
 public:
-    explicit SAW(BikeBot *_bikeBot);
-
-    void executeTask() final;
+    void executeTask(BikeBot *bikeBot) override;
 };
 
+class Dance: public Tasks {
+public:
+    void executeTask(BikeBot *bikeBot) override;
+};
+
+class ShakeHead: public Tasks {
+public:
+    void executeTask(BikeBot *bikeBot) override;
+};
 /**
  * This class allows us to access different tasks easily by
  * making this class construct the derived tasks
@@ -84,12 +83,6 @@ public:
     enum Choice {
         srs, lf, saw
     };
-
-    //BikeBot instance, since it's needed for us to be able to construct tasks.
-    BikeBot bikeBot;
-
-    //constructor for task, so we can pass down an instance of BikeBot in this class.
-    explicit Task(BikeBot _bikeBot);
 
     /**
      * Use a switch statement and depending on the case, construct the respective
@@ -114,10 +107,22 @@ public:
      * @return Return address of the constructed task.
      */
     template<class T>
-    static Tasks *construct(BikeBot **bikeBot) {
-        T temp(*bikeBot); //locale var; will be allocated a space in the stack.
+    static Tasks *construct(BikeBot *bikeBot) {
+        T temp; //locale var; will be allocated a space in the stack.
         T *t = &temp;    //Move to heap. don't delete because it's used in the loop() func.
         return t;        //Return address.
+    }
+};
+
+class ST {
+public:
+    virtual void execute(BikeBot & _bikeBot) = 0;
+};
+
+class srs:public ST {
+public:
+    void execute(BikeBot & _bikeBot) override {
+        _bikeBot.driveStraight(2);
     }
 };
 
