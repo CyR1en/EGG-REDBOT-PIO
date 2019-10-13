@@ -97,33 +97,22 @@ public:
     "\n Usage: construct<TasksClass>()")]]
     Tasks *construct(Choice c);
 
-    /**
-     * Use template to generically provide a task and construct it.
-     *
-     * Usage: Task(bikeBotInstance).construct<SRS>();
-     * Compilation error will occur when T isn't a Derived class of Task.
-     *
-     * @tparam T Derived class of Tasks.
-     * @return Return address of the constructed task.
-     */
-    template<class T>
-    static Tasks *construct(BikeBot *bikeBot) {
-        T temp; //locale var; will be allocated a space in the stack.
-        T *t = &temp;    //Move to heap. don't delete because it's used in the loop() func.
-        return t;        //Return address.
-    }
 };
 
-class ST {
-public:
-    virtual void execute(BikeBot & _bikeBot) = 0;
-};
-
-class srs:public ST {
-public:
-    void execute(BikeBot & _bikeBot) override {
-        _bikeBot.driveStraight(2);
-    }
-};
+/**
+ * Use template to generically provide a task and construct it.
+ *
+ * Usage: Task(bikeBotInstance).construct<SRS>();
+ * Compilation error will occur when T isn't a Derived class of Task.
+ *
+ * @tparam T Derived class of Tasks.
+ * @return Return address of the constructed task.
+ */
+template<class T>
+static Tasks *construct(BikeBot *bikeBot) {
+    T temp; //locale var; will be allocated a space in the stack.
+    T *t = &temp;    //Move to heap. don't delete because it's used in the loop() func.
+    return t;        //Return address.
+}
 
 #endif
