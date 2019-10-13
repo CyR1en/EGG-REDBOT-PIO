@@ -16,8 +16,8 @@ void execute(Tasks* tasks) {
 }
 
 void loop(void){
-    if (digitalRead(buttonPin) == LOW){
-        execute(Task::construct<Dance>(bikeBot));
+    if(digitalRead(buttonPin) == LOW) {
+        execute(construct<SRS>(bikeBot));
     }
 }
 

@@ -1,10 +1,8 @@
 #include "BikeBot.h"
 #include "Utils.h"
 
-#define DRIVE_THRESHOLD 100
+#define DRIVE_STRAIGHT_THRESHOLD 2
 #define KP 5
-
-int countsPerRev = 192 ;   // 4 pairs of N-S x 48:1 gearbox = 192 ticks per wheel rev
 
 float wheelDiam = 2.56;  // diam = 65mm / 25.4 mm/in
 float wheelCirc = PI * wheelDiam;
@@ -48,7 +46,7 @@ void BikeBot::reverse(float distance) {
 void BikeBot::driveStraight(float distance, int motorPower) {
     long lCount = 0;
     long rCount = 0;
-    long targetCount;
+    float targetCount;
     float numRev;
 
     // variables for tracking the left and right encoder counts
@@ -57,14 +55,14 @@ void BikeBot::driveStraight(float distance, int motorPower) {
     long lDiff, rDiff;  // diff between current encoder count and previous count
 
     // variables for setting left and right motor power
-    int leftPower = motorPower;
-    int rightPower = motorPower;
+    int leftPower = sgn(distance) * motorPower;
+    int rightPower = sgn(distance) * motorPower;
 
     // variable used to offset motor power on right vs left to keep straight.
-    int offset = 2;  // offset amount to compensate Right vs. Left drive
+    int offset = sgn(distance) * 5;  // offset amount to compensate Right vs. Left drive
 
     numRev = distance / wheelCirc;  // calculate the target # of rotations
-    targetCount = numRev * countsPerRev;    // calculate the target count
+    targetCount = numRev * calculateTicksPerRev((float) motorPower);    // calculate the target count
 
     // debug
     Serial.print("driveStraight() ");
@@ -75,7 +73,9 @@ void BikeBot::driveStraight(float distance, int motorPower) {
 
     Serial.print("Target: ");
     Serial.print(numRev, 3);
-    Serial.println(" revolutions.");
+    Serial.print(" revolutions. ");
+    Serial.print("With Ticks/Rev of ");
+    Serial.println(calculateTicksPerRev( (float) motorPower));
     Serial.println();
 
     // print out header
@@ -89,7 +89,7 @@ void BikeBot::driveStraight(float distance, int motorPower) {
 
     motors.drive(motorPower);  // start motors
 
-    while (rCount < targetCount)
+    while ((targetCount - rCount) > DRIVE_STRAIGHT_THRESHOLD)
     {
         // while the right encoder is less than the target count -- debug print
         // the encoder values and wait -- this is a holding loop.
@@ -124,10 +124,9 @@ void BikeBot::driveStraight(float distance, int motorPower) {
             leftPower = leftPower + offset;
             rightPower = rightPower - offset;
         }
-        delay(50);  // short delay to give motors a chance to respond.
+        delay(10);  // short delay to give motors a chance to respond.
     }
     // now apply "brakes" to stop the motors.
-    motors.brake();
     motors.brake();
 }
 
@@ -157,7 +156,7 @@ void BikeBot::pivotPrecise(float angle) {
 
     // use correction to improve angle accuracy
     // adjust correction value based on test results
-    float correction = -10.0; // need decimal point for float value
+    float correction = -6.5; // need decimal point for float value
     if (angle > 0) angle += correction;
     else if (angle < 0) angle -= correction;
 
@@ -174,7 +173,7 @@ void BikeBot::pivotPrecise(float angle) {
     float numRev = distance / wheelCirc;
 
     // based on number of revolutions, calculate target encoder count
-    float targetCount = numRev * countsPerRev;
+    float targetCount = numRev * calculateTicksPerRev(power);
 
     // reset encoder counters and start pivoting
     encoder.clearEnc(BOTH);
