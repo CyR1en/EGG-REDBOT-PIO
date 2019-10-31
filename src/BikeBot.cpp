@@ -156,7 +156,7 @@ void BikeBot::pivotPrecise(float angle) {
 
     // use correction to improve angle accuracy
     // adjust correction value based on test results
-    float correction = -6.5; // need decimal point for float value
+    float correction = -34.0; // need decimal point for float value
     if (angle > 0) angle += correction;
     else if (angle < 0) angle -= correction;
 

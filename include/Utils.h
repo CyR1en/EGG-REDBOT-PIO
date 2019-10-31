@@ -5,7 +5,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#define B_1 207.0f
+#define B_1 225.0f
 #define B_2 148.0f
 
 template<typename T>

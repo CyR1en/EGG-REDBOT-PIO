@@ -18,6 +18,9 @@ void execute(Tasks* tasks) {
 void loop(void){
     if(digitalRead(buttonPin) == LOW) {
         execute(construct<SRS>(bikeBot));
+/*
+        bikeBot->driveStraight(18);
+*/
     }
 }
 
