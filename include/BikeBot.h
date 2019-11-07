@@ -15,10 +15,13 @@ const int INDEFINITE = -1;
 
 class BikeBot {
 
-private:
+public:
     int power;
     RedBotMotors motors;
     RedBotEncoder encoder = RedBotEncoder(A2, 10);
+    RedBotSensor leftSensor = RedBotSensor(A3);   // initialize a left sensor object on A3
+    RedBotSensor centerSensor = RedBotSensor(A6); // initialize a center sensor object on A6
+    RedBotSensor rightSensor = RedBotSensor(A7);  // initialize a right sensor object on A7
     Validate validator;
 
 public:
@@ -45,6 +48,8 @@ public:
     void leftDrive(int speed);
 
     void driveStraight(float distance, int motorPower = DEFAULT_POWER);
+
+    void lineFollow();
 
     void pivotPrecise(float angle);
 };

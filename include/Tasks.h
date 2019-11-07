@@ -53,6 +53,8 @@ public:
  * Tolerances: Front of robot remains stationary between 5-7 inches from the wall.
  */
 class SAW : public Tasks {
+private:
+
 public:
     void executeTask(BikeBot *bikeBot) override;
 };

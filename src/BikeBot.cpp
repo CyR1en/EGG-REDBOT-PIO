@@ -2,10 +2,14 @@
 #include "Utils.h"
 
 #define DRIVE_STRAIGHT_THRESHOLD 2
+// sets the nominal speed. Set to any number from 0 - 255.
+
 #define KP 5
 
 float wheelDiam = 2.56;  // diam = 65mm / 25.4 mm/in
 float wheelCirc = PI * wheelDiam;
+
+
 
 /*
  * Zero-Argument Constructor.
@@ -75,7 +79,7 @@ void BikeBot::driveStraight(float distance, int motorPower) {
     Serial.print(numRev, 3);
     Serial.print(" revolutions. ");
     Serial.print("With Ticks/Rev of ");
-    Serial.println(calculateTicksPerRev( (float) motorPower));
+    Serial.println(calculateTicksPerRev((float) motorPower));
     Serial.println();
 
     // print out header
@@ -89,8 +93,7 @@ void BikeBot::driveStraight(float distance, int motorPower) {
 
     motors.drive(motorPower);  // start motors
 
-    while ((targetCount - rCount) > DRIVE_STRAIGHT_THRESHOLD)
-    {
+    while ((targetCount - rCount) > DRIVE_STRAIGHT_THRESHOLD) {
         // while the right encoder is less than the target count -- debug print
         // the encoder values and wait -- this is a holding loop.
         lCount = encoder.getTicks(LEFT);
@@ -113,14 +116,12 @@ void BikeBot::driveStraight(float distance, int motorPower) {
         prevrCount = rCount;
 
         // if left is faster than the right, slow down the left / speed up right
-        if (lDiff > rDiff)
-        {
+        if (lDiff > rDiff) {
             leftPower = leftPower - offset;
             rightPower = rightPower + offset;
         }
             // if right is faster than the left, speed up the left / slow down right
-        else if (lDiff < rDiff)
-        {
+        else if (lDiff < rDiff) {
             leftPower = leftPower + offset;
             rightPower = rightPower - offset;
         }
