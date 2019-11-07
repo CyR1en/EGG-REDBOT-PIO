@@ -2,8 +2,9 @@
 #include "Tasks.h"
 
 
-#define LINE_THRESHOLD 800
-#define SPEED 60
+#define LINE_THRESHOLD 750
+#define SPEED 50
+
 /**
  * Instead of manually setting a task, let this function construct the task and set it to the pointer.
  * Switch statement for the enum Task::Choice. The logic for each case is as follows:
@@ -41,34 +42,33 @@ void SRS::executeTask(BikeBot *bikeBot) {
 
 //executeTask() implementation for class LF(Line Follow).
 void LF::executeTask(BikeBot *bikeBot) {
+    const int mainSpeed = 100;
+    const int lineContrast = 300;
 
-    int leftSpeed;   // variable used to store the leftMotor speed
-    int rightSpeed;  // variable used to store the rightMotor speed
+    bool running = true;
 
-    bool stopped = false;
+    while(running) {
+        int contrast = abs(bikeBot->leftSensor.read() - bikeBot->rightSensor.read());
 
-    while(!stopped) {
-        Serial.print(bikeBot->leftSensor.read());
-        Serial.print("\t");  // tab character
-        Serial.print(bikeBot->centerSensor.read());
-        Serial.print("\t");  // tab character
-        Serial.print(bikeBot->rightSensor.read());
-        Serial.println();
-
-        if (bikeBot->rightSensor.read() > LINE_THRESHOLD) {
-            leftSpeed = -(SPEED + 50);
-            rightSpeed = SPEED - 50;
-        } else if (bikeBot->leftSensor.read() > LINE_THRESHOLD) {
-            leftSpeed = -(SPEED - 50);
-            rightSpeed = SPEED + 50;
+        if(contrast < lineContrast)
+            bikeBot->motors.drive(mainSpeed);
+        else if (bikeBot->leftSensor.read() > bikeBot->rightSensor.read()) {
+            bikeBot->motors.leftStop();
+            bikeBot->motors.rightDrive(mainSpeed);
+        } else {
+            bikeBot->motors.rightStop();
+            bikeBot->motors.leftDrive(mainSpeed);
         }
 
-        bikeBot->motors.leftMotor(leftSpeed);
-        bikeBot->motors.rightMotor(rightSpeed);
-
-        delay(50);
+        if (bikeBot->centerSensor.read() > 250) {
+            bikeBot->motors.brake();
+            running = false;
+        }
     }
+
 }
+
+
 
 //executeTask() implementation for class SAW(Stop At Wall).
 void SAW::executeTask(BikeBot *bikeBot) {
@@ -157,7 +157,7 @@ void SAW::executeTask(BikeBot *bikeBot) {
             rightPower = rightPower - offset;
         }
 
-        if(bikeBot->centerSensor.read() > 250) {
+        if (bikeBot->centerSensor.read() > 250) {
             bikeBot->motors.brake();
             running = false;
         }
