@@ -46,28 +46,33 @@ void LF::executeTask(BikeBot *bikeBot) {
     const int lineContrast = 300;
 
     bool running = true;
+    int contrast;
 
-    while(running) {
-        int contrast = abs(bikeBot->leftSensor.read() - bikeBot->rightSensor.read());
+    while (running) {
+        contrast = bikeBot->leftSensor.read() - bikeBot->rightSensor.read();
 
-        if(contrast < lineContrast)
+        if ( abs(contrast) < lineContrast) {
+            Serial.print("[S] ");
             bikeBot->motors.drive(mainSpeed);
-        else if (bikeBot->leftSensor.read() > bikeBot->rightSensor.read()) {
+        } else if (contrast > lineContrast) {
+            Serial.print("[L] ");
             bikeBot->motors.leftStop();
             bikeBot->motors.rightDrive(mainSpeed);
         } else {
+            Serial.print("[R] ");
             bikeBot->motors.rightStop();
             bikeBot->motors.leftDrive(mainSpeed);
         }
+        Serial.println(contrast);
 
         if (bikeBot->centerSensor.read() > 250) {
             bikeBot->motors.brake();
             running = false;
         }
+        delay(50);
     }
 
 }
-
 
 
 //executeTask() implementation for class SAW(Stop At Wall).
