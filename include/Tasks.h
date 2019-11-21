@@ -39,8 +39,37 @@ public:
  * Tolerance: Robot must not leave the path, and robot must reach the end of the path
  */
 class LF : public Tasks {
+private:
+    const int mainSpeed = 150;
+    const int lineContrast = 300;
+
+#define LEFT_SENSOR 0
+#define RIGHT_SENSOR 1
+
+    bool deviated = false;
+    unsigned long lastHitMillis;
+    byte lastHit;
+
+    bool running = true;
+
 public:
     void executeTask(BikeBot *bikeBot) override;
+
+    void update(BikeBot *bB);
+
+    void updateMainLineFollow(BikeBot *bB);
+
+    void updateDeviationCheck(BikeBot *bB);
+
+    void updateStopper(BikeBot *bB);
+
+    void correctBot(BikeBot *bB);
+
+    void updateContrast(BikeBot *bB);
+
+    int getContrast(BikeBot *bB);
+
+    void recordLastHit(byte sensor);
 };
 
 /**
@@ -59,15 +88,16 @@ public:
     void executeTask(BikeBot *bikeBot) override;
 };
 
-class Dance: public Tasks {
+class Dance : public Tasks {
 public:
     void executeTask(BikeBot *bikeBot) override;
 };
 
-class ShakeHead: public Tasks {
+class ShakeHead : public Tasks {
 public:
     void executeTask(BikeBot *bikeBot) override;
 };
+
 /**
  * This class allows us to access different tasks easily by
  * making this class construct the derived tasks

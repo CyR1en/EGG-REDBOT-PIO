@@ -41,6 +41,7 @@ void SRS::executeTask(BikeBot *bikeBot) {
 }
 
 //executeTask() implementation for class LF(Line Follow).
+/*
 void LF::executeTask(BikeBot *bikeBot) {
     const int mainSpeed = 100;
     const int lineContrast = 300;
@@ -73,6 +74,7 @@ void LF::executeTask(BikeBot *bikeBot) {
     }
 
 }
+ */
 
 
 //executeTask() implementation for class SAW(Stop At Wall).
