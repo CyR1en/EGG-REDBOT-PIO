@@ -2,15 +2,20 @@
 // Created by Ethan Bacurio on 11/18/19.
 //
 
+#include <Utils.h>
 #include "Tasks.h"
 
 #define SPEED 120
+#define LINECONTRAST 300
+
+int wallHits = 0;
 
 //executeTask() implementation for class LF(Line Follow).
 void LF::executeTask(BikeBot *bikeBot) {
     Serial.println("Executed LF");
     running = true;
-    Serial.print("Running: "); Serial.println(running);
+    Serial.print("Running: ");
+    Serial.println(running);
     while (running) {
         update(bikeBot);
         delay(50);
@@ -20,7 +25,6 @@ void LF::executeTask(BikeBot *bikeBot) {
 void LF::update(BikeBot *bikeBot) {
     if (!deviated) {
         updateMainLineFollow(bikeBot);
-        updateDeviationCheck(bikeBot);
         updateStopper(bikeBot);
     } else {
         correctBot(bikeBot);
@@ -65,10 +69,18 @@ void LF::updateDeviationCheck(BikeBot *bikeBot) {
 }
 
 void LF::updateStopper(BikeBot *bikeBot) {
-    if (bikeBot->centerSensor.read() > 250) {
+    if (bikeBot->centerSensor.read() > 280) {
+        wallHits++;
+        Serial.print("Incremented Wall Hits: "); Serial.println(wallHits);
+    }
+    if (wallHits == 1) {
+        bikeBot->pivotPrecise(90);
+        wallHits++;
+    } else if (wallHits == 3) {
         bikeBot->motors.brake();
         running = false;
     }
+
 }
 
 int LF::getContrast(BikeBot *bikeBot) {
