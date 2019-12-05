@@ -19,5 +19,7 @@ void loop(void){
     if(digitalRead(buttonPin) == LOW) {
         execute(construct<LF>(bikeBot));
     }
+
+    //Serial.println(bikeBot->leftSensor.read() - bikeBot->rightSensor.read());
 }
 

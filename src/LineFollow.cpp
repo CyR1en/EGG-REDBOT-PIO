@@ -5,8 +5,8 @@
 #include <Utils.h>
 #include "Tasks.h"
 
-#define SPEED 120
-#define LINECONTRAST 300
+#define SPEED 80
+#define LINE_CONTRAST 140
 
 int wallHits = 0;
 
@@ -33,10 +33,10 @@ void LF::update(BikeBot *bikeBot) {
 
 void LF::updateMainLineFollow(BikeBot *bikeBot) {
     int sensorContrast = getContrast(bikeBot);
-    if (abs(sensorContrast) < lineContrast) {
+    if (abs(sensorContrast) < LINE_CONTRAST) {
         Serial.print("[S] ");
         bikeBot->motors.drive(SPEED);
-    } else if (sensorContrast > lineContrast) {
+    } else if (sensorContrast > LINE_CONTRAST) {
         Serial.print("[L] ");
         bikeBot->motors.leftStop();
         bikeBot->motors.rightDrive(SPEED);
@@ -78,9 +78,9 @@ void LF::updateStopper(BikeBot *bikeBot) {
         wallHits++;
     } else if (wallHits == 3) {
         bikeBot->motors.brake();
+        construct<Dance>(bikeBot)->executeTask(bikeBot);
         running = false;
     }
-
 }
 
 int LF::getContrast(BikeBot *bikeBot) {
